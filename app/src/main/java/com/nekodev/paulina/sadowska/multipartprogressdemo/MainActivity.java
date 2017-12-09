@@ -1,8 +1,10 @@
 package com.nekodev.paulina.sadowska.multipartprogressdemo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,18 +13,23 @@ import android.widget.Toast;
 
 import com.nekodev.paulina.sadowska.multipartprogressdemo.api.UploadsImServiceGenerator;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Created by Paulina Sadowska on 09.12.2017.
  */
 
-public class MainActivity extends AppCompatActivity implements FileUploaderContract.View {
+public class MainActivity extends AppCompatActivity implements FileUploaderContract.View, EasyPermissions.PermissionCallbacks {
 
     public static final int PICK_IMAGE = 100;
     private static final String MEDIA_TYPE_IMAGE = "image/*";
+    private static final int RC_READ_FILE = 999;
 
     @BindView(R.id.preview_image)
     View preview;
@@ -37,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        methodRequiresReadPermission();
         presenter = new FileUploaderPresenter(this,
                 new FileUploaderModel(UploadsImServiceGenerator.createService()),
                 new FileResolver(getContentResolver()));
@@ -66,5 +74,33 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
     @Override
     public void uploadCompleted() {
         Toast.makeText(this, R.string.upload_completed, Toast.LENGTH_SHORT).show();
+    }
+
+    @AfterPermissionGranted(RC_READ_FILE)
+    private void methodRequiresReadPermission() {
+        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE};
+        if (!EasyPermissions.hasPermissions(this, perms)) {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_read_storage),
+                    RC_READ_FILE, perms);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        finish();
+    }
+
+    @Override
+    public void onPermissionsGranted(int i, List<String> list) {
+
     }
 }
