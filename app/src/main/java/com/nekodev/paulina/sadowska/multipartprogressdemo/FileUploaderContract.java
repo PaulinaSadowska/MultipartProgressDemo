@@ -11,11 +11,13 @@ import okhttp3.ResponseBody;
 
 public interface FileUploaderContract {
     interface View {
-        void showThumbnail(Uri selectedimage);
+        void showThumbnail(Uri selectedImage);
 
         void showErrorMessage(String message);
 
         void uploadCompleted();
+
+        void setUploadProgress(int progress);
     }
 
     interface Presenter {

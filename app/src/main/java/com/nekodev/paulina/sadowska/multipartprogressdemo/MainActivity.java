@@ -31,14 +31,13 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends AppCompatActivity implements FileUploaderContract.View, EasyPermissions.PermissionCallbacks {
 
     public static final int PICK_IMAGE = 100;
-    private static final String MEDIA_TYPE_IMAGE = "image/*";
     private static final int RC_READ_FILE = 999;
 
     @BindView(R.id.preview_image)
     ImageView preview;
 
     @BindView(R.id.progress_text)
-    TextView progress;
+    TextView progressText;
 
     @BindView(R.id.preview_white_layer)
     View whiteLayer;
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
     @OnClick(R.id.upload_button)
     void onUploadClicked() {
         Intent intent = new Intent();
-        intent.setType(MEDIA_TYPE_IMAGE);
+        intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_image)), PICK_IMAGE);
     }
@@ -88,7 +87,13 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
     @Override
     public void uploadCompleted() {
         whiteLayer.setVisibility(View.GONE);
+        progressText.setVisibility(View.GONE);
         Toast.makeText(this, R.string.upload_completed, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setUploadProgress(int progress) {
+        progressText.setText(progress + "%");
     }
 
     @AfterPermissionGranted(RC_READ_FILE)
