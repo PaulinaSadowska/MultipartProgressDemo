@@ -3,15 +3,17 @@ package com.nekodev.paulina.sadowska.multipartprogressdemo;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nekodev.paulina.sadowska.multipartprogressdemo.api.UploadsImServiceGenerator;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
     private static final int RC_READ_FILE = 999;
 
     @BindView(R.id.preview_image)
-    View preview;
+    ImageView preview;
 
     @BindView(R.id.progress_text)
     TextView progress;
@@ -64,6 +66,13 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             presenter.imageSelected(data.getData());
         }
+    }
+
+    @Override
+    public void showThumbnail(Uri selectedImage) {
+        Picasso.with(this)
+                .load(selectedImage)
+                .into(preview);
     }
 
     @Override
@@ -101,6 +110,5 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
 
     @Override
     public void onPermissionsGranted(int i, List<String> list) {
-
     }
 }

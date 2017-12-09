@@ -1,6 +1,7 @@
 package com.nekodev.paulina.sadowska.multipartprogressdemo;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -24,19 +25,20 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
     @Override
     public void imageSelected(Uri selectedImage) {
         String filePath = fileResolver.getFilePath(selectedImage);
-        if(filePath.isEmpty()){
+        if (TextUtils.isEmpty(filePath)) {
+            view.showErrorMessage("incorrect file uri");
             return;
         }
+        view.showThumbnail(selectedImage);
         model.uploadImage(filePath)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> {
-view.uploadCompleted();
+                            view.uploadCompleted();
                         },
                         error -> view.showErrorMessage(error.getMessage())
                 );
-
 
 
     }

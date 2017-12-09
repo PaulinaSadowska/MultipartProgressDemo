@@ -8,9 +8,15 @@
     tools:context="com.nekodev.paulina.sadowska.multipartprogressdemo.MainActivity">
 
     <FrameLayout
-        android:id="@+id/preview_image"
         android:layout_width="@dimen/image_size"
         android:layout_height="@dimen/image_size">
+
+        <ImageView
+            android:id="@+id/preview_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_launcher_foreground"/>
 
         <TextView
             android:id="@+id/progress_text"
@@ -18,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="24sp"
-            tools:text="18%"/>
+            tools:text="18%" />
 
     </FrameLayout>
 

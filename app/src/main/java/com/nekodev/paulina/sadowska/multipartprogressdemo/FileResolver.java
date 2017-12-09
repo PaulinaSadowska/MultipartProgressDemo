@@ -4,28 +4,30 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import io.reactivex.annotations.Nullable;
+
 /**
  * Created by Paulina Sadowska on 09.12.2017.
  */
 
-public class FileResolver {
+class FileResolver {
 
-    private static final String FILE_PATH_EMPTY = "";
     private final ContentResolver contentResolver;
 
-    public FileResolver(ContentResolver contentResolver) {
+    FileResolver(ContentResolver contentResolver) {
         this.contentResolver = contentResolver;
     }
 
-    public String getFilePath(Uri selectedImage) {
+    @Nullable
+    String getFilePath(Uri selectedImage) {
         if (selectedImage == null) {
-            return FILE_PATH_EMPTY;
+            return null;
         }
 
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
         android.database.Cursor cursor = contentResolver.query(selectedImage, filePathColumn, null, null, null);
         if (cursor == null) {
-            return FILE_PATH_EMPTY;
+            return null;
         }
 
         cursor.moveToFirst();

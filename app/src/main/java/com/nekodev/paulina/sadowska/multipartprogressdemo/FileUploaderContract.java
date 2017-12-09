@@ -11,6 +11,8 @@ import okhttp3.ResponseBody;
 
 public interface FileUploaderContract {
     interface View {
+        void showThumbnail(Uri selectedimage);
+
         void showErrorMessage(String message);
 
         void uploadCompleted();
