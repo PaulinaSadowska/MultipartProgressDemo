@@ -4,15 +4,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by Paulina Sadowska on 09.12.2017.
@@ -52,6 +60,34 @@ public class MainActivity extends AppCompatActivity {
             Uri selectedImage = data.getData();
             if (selectedImage != null) {
                 Toast.makeText(this, "selectedImage " + selectedImage.getPath(), Toast.LENGTH_SHORT).show();
+
+
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                android.database.Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                if (cursor == null)
+                    return;
+
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+
+                File file = new File(filePath);
+
+                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+
+                UploadsImServiceGenerator
+                        .createService()
+                        .postImage(body)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> {
+                            Toast.makeText(this, "result " + result.string(), Toast.LENGTH_SHORT).show();
+                        }, error -> {
+                            Toast.makeText(this, "error " + error.getCause().getMessage(), Toast.LENGTH_SHORT).show();
+                        });
             }
         }
     }
