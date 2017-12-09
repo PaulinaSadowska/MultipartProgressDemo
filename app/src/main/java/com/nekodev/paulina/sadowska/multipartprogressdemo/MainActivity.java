@@ -30,7 +30,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity implements FileUploaderContract.View, EasyPermissions.PermissionCallbacks {
 
-    public static final int PICK_IMAGE = 100;
+    private static final int PICK_IMAGE = 100;
     private static final int RC_READ_FILE = 999;
 
     @BindView(R.id.preview_image)
@@ -42,17 +42,23 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
     @BindView(R.id.preview_white_layer)
     View whiteLayer;
 
-    FileUploaderPresenter presenter;
+    private FileUploaderPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initializePresenter();
         methodRequiresReadPermission();
-        presenter = new FileUploaderPresenter(this,
-                new FileUploaderModel(UploadsImServiceGenerator.createService()),
-                new FileResolver(getContentResolver()));
+    }
+
+    private void initializePresenter() {
+        presenter = new FileUploaderPresenter(
+                this,
+                new FileResolver(getContentResolver()),
+                new FileUploaderModel(UploadsImServiceGenerator.createService())
+        );
     }
 
     @OnClick(R.id.upload_button)
@@ -116,11 +122,11 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
     }
 
     @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         finish();
     }
 
     @Override
-    public void onPermissionsGranted(int i, List<String> list) {
+    public void onPermissionsGranted(int i, @NonNull List<String> list) {
     }
 }

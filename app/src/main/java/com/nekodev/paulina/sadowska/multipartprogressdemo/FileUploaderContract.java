@@ -8,7 +8,7 @@ import io.reactivex.Flowable;
  * Created by Paulina Sadowska on 09.12.2017.
  */
 
-public interface FileUploaderContract {
+interface FileUploaderContract {
     interface View {
         void showThumbnail(Uri selectedImage);
 

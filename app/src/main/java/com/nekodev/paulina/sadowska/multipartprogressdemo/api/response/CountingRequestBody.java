@@ -1,8 +1,6 @@
 package com.nekodev.paulina.sadowska.multipartprogressdemo.api.response;
 
-/**
- * Created by Paulina Sadowska on 09.12.2017.
- */
+import android.support.annotation.NonNull;
 
 import java.io.IOException;
 
@@ -20,13 +18,12 @@ import okio.Sink;
  * multipart requests.
  *
  * @author Leo Nikkilä
+ * with modifications made by Paulina Sadowska
  */
 public class CountingRequestBody extends RequestBody {
 
-    protected RequestBody delegate;
-    protected Listener listener;
-
-    protected CountingSink countingSink;
+    private final RequestBody delegate;
+    private final Listener listener;
 
     public CountingRequestBody(RequestBody delegate, Listener listener) {
         this.delegate = delegate;
@@ -49,9 +46,8 @@ public class CountingRequestBody extends RequestBody {
     }
 
     @Override
-    public void writeTo(BufferedSink sink) throws IOException {
-
-        countingSink = new CountingSink(sink);
+    public void writeTo(@NonNull BufferedSink sink) throws IOException {
+        CountingSink countingSink = new CountingSink(sink);
         BufferedSink bufferedSink = Okio.buffer(countingSink);
 
         delegate.writeTo(bufferedSink);
@@ -59,16 +55,16 @@ public class CountingRequestBody extends RequestBody {
         bufferedSink.flush();
     }
 
-    protected final class CountingSink extends ForwardingSink {
+    final class CountingSink extends ForwardingSink {
 
         private long bytesWritten = 0;
 
-        public CountingSink(Sink delegate) {
+        CountingSink(Sink delegate) {
             super(delegate);
         }
 
         @Override
-        public void write(Buffer source, long byteCount) throws IOException {
+        public void write(@NonNull Buffer source, long byteCount) throws IOException {
             super.write(source, byteCount);
             bytesWritten += byteCount;
             listener.onRequestProgress(bytesWritten, contentLength());

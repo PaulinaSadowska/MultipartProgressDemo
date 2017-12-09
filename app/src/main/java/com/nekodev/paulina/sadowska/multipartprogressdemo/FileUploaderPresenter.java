@@ -13,10 +13,10 @@ import io.reactivex.schedulers.Schedulers;
 class FileUploaderPresenter implements FileUploaderContract.Presenter {
 
     private final FileResolver fileResolver;
-    private final FileUploaderContract.View view;
     private final FileUploaderContract.Model model;
+    private final FileUploaderContract.View view;
 
-    FileUploaderPresenter(FileUploaderContract.View view, FileUploaderContract.Model model, FileResolver fileResolver) {
+    FileUploaderPresenter(FileUploaderContract.View view, FileResolver fileResolver, FileUploaderContract.Model model) {
         this.view = view;
         this.model = model;
         this.fileResolver = fileResolver;
@@ -38,7 +38,5 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
                         error -> view.showErrorMessage(error.getMessage()),
                         view::uploadCompleted
                 );
-
-
     }
 }
