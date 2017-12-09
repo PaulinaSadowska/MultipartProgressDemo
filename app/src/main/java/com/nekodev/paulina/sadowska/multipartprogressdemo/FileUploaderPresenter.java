@@ -34,10 +34,9 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        responseBody -> {
-                            view.uploadCompleted();
-                        },
-                        error -> view.showErrorMessage(error.getMessage())
+                        progress -> view.setUploadProgress((int) (100 * progress)),
+                        error -> view.showErrorMessage(error.getMessage()),
+                        view::uploadCompleted
                 );
 
 

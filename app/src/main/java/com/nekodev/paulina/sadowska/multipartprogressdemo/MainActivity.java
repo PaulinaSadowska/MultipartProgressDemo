@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
 
     @Override
     public void showErrorMessage(String message) {
+        progressText.setText(R.string.upload_error);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 

@@ -2,8 +2,7 @@ package com.nekodev.paulina.sadowska.multipartprogressdemo;
 
 import android.net.Uri;
 
-import io.reactivex.Single;
-import okhttp3.ResponseBody;
+import io.reactivex.Flowable;
 
 /**
  * Created by Paulina Sadowska on 09.12.2017.
@@ -25,6 +24,6 @@ public interface FileUploaderContract {
     }
 
     interface Model {
-        Single<ResponseBody> uploadImage(String filePath);
+        Flowable<Double> uploadImage(String filePath);
     }
 }
