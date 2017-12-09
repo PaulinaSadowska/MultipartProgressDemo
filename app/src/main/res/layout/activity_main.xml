@@ -15,15 +15,15 @@
             android:id="@+id/preview_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:background="@color/indigo_200"/>
+            android:background="@color/indigo_200"
+            android:scaleType="centerCrop" />
 
         <FrameLayout
             android:id="@+id/preview_white_layer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#9CFFFFFF"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/progress_text"
@@ -42,5 +42,6 @@
         android:layout_marginBottom="50dp"
         android:layout_marginTop="32dp"
         android:text="@string/choose_image" />
+
 
 </LinearLayout>

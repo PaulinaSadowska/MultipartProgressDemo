@@ -23,7 +23,7 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
     }
 
     @Override
-    public void imageSelected(Uri selectedImage) {
+    public void onImageSelected(Uri selectedImage) {
         String filePath = fileResolver.getFilePath(selectedImage);
         if (TextUtils.isEmpty(filePath)) {
             view.showErrorMessage("incorrect file uri");
@@ -37,6 +37,23 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
                         progress -> view.setUploadProgress((int) (100 * progress)),
                         error -> view.showErrorMessage(error.getMessage()),
                         view::uploadCompleted
+                );
+    }
+
+    @Override
+    public void onImageSelectedWithoutShowProgress(Uri selectedImage) {
+        String filePath = fileResolver.getFilePath(selectedImage);
+        if (TextUtils.isEmpty(filePath)) {
+            view.showErrorMessage("incorrect file uri");
+            return;
+        }
+        view.showThumbnail(selectedImage);
+        model.uploadImageWithoutProgress(filePath)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> view.uploadCompleted(),
+                        error -> view.showErrorMessage(error.getMessage())
                 );
     }
 }

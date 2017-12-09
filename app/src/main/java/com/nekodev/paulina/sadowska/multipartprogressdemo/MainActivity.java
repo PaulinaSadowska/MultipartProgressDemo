@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-            presenter.imageSelected(data.getData());
+            presenter.onImageSelected(data.getData());
         }
     }
 
