@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.nekodev.paulina.sadowska.multipartprogressdemo.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/preview_image"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size">
+
+        <TextView
+            android:id="@+id/progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="24sp"
+            tools:text="18%"/>
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/choose_image" />
+
+</LinearLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MultipartProgressDemo</string>
+    <string name="choose_image">choose image</string>
+    <string name="select_image">select_image</string>
+</resources>

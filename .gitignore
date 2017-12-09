@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gradle/
+.idea/
+MultipartProgressDemo.iml
+build/
+local.properties
+gradlew
+gradlew.bat
