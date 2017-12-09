@@ -20,7 +20,6 @@ public class UploadsImServiceGenerator {
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .build();
 
-        // Change base URL to your upload server URL.
         return new Retrofit
                 .Builder()
                 .baseUrl(UPLOAD_IM_ADDRESS)
