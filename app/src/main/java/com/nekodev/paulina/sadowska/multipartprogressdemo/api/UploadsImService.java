@@ -1,4 +1,4 @@
-package com.nekodev.paulina.sadowska.multipartprogressdemo;
+package com.nekodev.paulina.sadowska.multipartprogressdemo.api;
 
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -11,7 +11,7 @@ import retrofit2.http.Part;
  * Created by Paulina Sadowska on 09.12.2017.
  */
 
-interface UploadsImService {
+public interface UploadsImService {
     @Multipart
     @POST("/api")
     Single<ResponseBody> postImage(@Part MultipartBody.Part image);
