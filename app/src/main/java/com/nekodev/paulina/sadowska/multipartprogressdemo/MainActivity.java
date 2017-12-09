@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
 
     @BindView(R.id.progress_text)
     TextView progress;
+
+    @BindView(R.id.preview_white_layer)
+    View whiteLayer;
 
     FileUploaderPresenter presenter;
 
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
 
     @Override
     public void showThumbnail(Uri selectedImage) {
+        whiteLayer.setVisibility(View.VISIBLE);
         Picasso.with(this)
                 .load(selectedImage)
                 .into(preview);
@@ -82,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
 
     @Override
     public void uploadCompleted() {
+        whiteLayer.setVisibility(View.GONE);
         Toast.makeText(this, R.string.upload_completed, Toast.LENGTH_SHORT).show();
     }
 

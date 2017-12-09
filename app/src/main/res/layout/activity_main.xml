@@ -16,7 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_foreground"/>
+            tools:src="@drawable/ic_launcher_background"/>
+
+        <FrameLayout
+            android:id="@+id/preview_white_layer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#9CFFFFFF" />
 
         <TextView
             android:id="@+id/progress_text"
