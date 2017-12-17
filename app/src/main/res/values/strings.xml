@@ -5,4 +5,5 @@
     <string name="upload_completed">upload completed</string>
     <string name="rationale_read_storage">App needs read file permission</string>
     <string name="upload_error">upload error</string>
+    <string name="calcel_upload">cancel upload</string>
 </resources>

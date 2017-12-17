@@ -39,9 +39,16 @@
         android:id="@+id/upload_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:text="@string/choose_image" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:layout_marginTop="32dp"
-        android:text="@string/choose_image" />
+        android:text="@string/calcel_upload" />
 
 
 </LinearLayout>

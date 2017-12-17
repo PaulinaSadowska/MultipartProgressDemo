@@ -46,7 +46,7 @@ public class FileUploaderModel implements FileUploaderContract.Model {
     public Flowable<Double> uploadImage(String filePath) {
         return Flowable.create(emitter -> service.postImage(createMultipartBody(filePath, emitter))
                 .subscribe(result ->
-                        emitter.onComplete(), emitter::onError), BackpressureStrategy.LATEST);
+                        emitter.onComplete(), emitter::tryOnError), BackpressureStrategy.LATEST);
     }
 
     private MultipartBody.Part createMultipartBody(String filePath, FlowableEmitter<Double> emitter) {

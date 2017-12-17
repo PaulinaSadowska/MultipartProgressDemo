@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -15,6 +16,8 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
     private final FileResolver fileResolver;
     private final FileUploaderContract.Model model;
     private final FileUploaderContract.View view;
+
+    private Disposable photoUploadDisposable;
 
     FileUploaderPresenter(FileUploaderContract.View view, FileResolver fileResolver, FileUploaderContract.Model model) {
         this.view = view;
@@ -30,7 +33,7 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
             return;
         }
         view.showThumbnail(selectedImage);
-        model.uploadImage(filePath)
+        photoUploadDisposable = model.uploadImage(filePath)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -48,12 +51,19 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
             return;
         }
         view.showThumbnail(selectedImage);
-        model.uploadImageWithoutProgress(filePath)
+        photoUploadDisposable = model.uploadImageWithoutProgress(filePath)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> view.uploadCompleted(),
                         error -> view.showErrorMessage(error.getMessage())
                 );
+    }
+
+    @Override
+    public void cancel() {
+        if (photoUploadDisposable != null && !photoUploadDisposable.isDisposed()) {
+            photoUploadDisposable.dispose();
+        }
     }
 }

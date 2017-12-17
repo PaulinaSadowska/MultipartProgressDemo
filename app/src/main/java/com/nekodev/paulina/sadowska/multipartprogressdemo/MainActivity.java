@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_image)), PICK_IMAGE);
     }
 
+    @OnClick(R.id.cancel_button)
+    void onCancelClicked() {
+        presenter.cancel();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
