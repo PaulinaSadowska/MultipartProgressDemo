@@ -74,8 +74,8 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
     @Override
     public void testErrorHandling() {
         CompositeDisposable compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(flowableFromCallable()
-                .subscribeOn(Schedulers.computation())
+        compositeDisposable.add(createFlowable()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(billingClient -> view.uploadCompleted(),
                         e -> view.showErrorMessage(e.getMessage())));
@@ -85,13 +85,17 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
 
     private Flowable<Integer> createFlowable() {
         return Flowable.create(emitter -> {
-            Thread.sleep(10000);
-            emitter.onError(new Throwable("error: "));
+            try {
+                Thread.sleep(10000);
+            } catch (Exception e){
+                emitter.tryOnError(e);
+            }
         }, BackpressureStrategy.BUFFER);
     }
 
     private Flowable<Integer> flowableFromCallable() {
         return Flowable.fromCallable(() -> {
+            Thread.sleep(10000);
             throw new Exception("error 2: ");
         });
     }
