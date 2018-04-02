@@ -27,6 +27,8 @@ interface FileUploaderContract {
         void onImageSelectedWithoutShowProgress(Uri selectedImage);
 
         void cancel();
+
+        void testErrorHandling();
     }
 
     interface Model {

@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements FileUploaderContr
 
     @OnClick(R.id.upload_button)
     void onUploadClicked() {
+        //presenter.testErrorHandling();
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);

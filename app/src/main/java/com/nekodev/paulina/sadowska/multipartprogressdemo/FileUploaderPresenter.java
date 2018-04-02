@@ -1,9 +1,13 @@
 package com.nekodev.paulina.sadowska.multipartprogressdemo;
 
 import android.net.Uri;
+import android.os.Handler;
 import android.text.TextUtils;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -65,5 +69,30 @@ class FileUploaderPresenter implements FileUploaderContract.Presenter {
         if (photoUploadDisposable != null && !photoUploadDisposable.isDisposed()) {
             photoUploadDisposable.dispose();
         }
+    }
+
+    @Override
+    public void testErrorHandling() {
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        compositeDisposable.add(flowableFromCallable()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(billingClient -> view.uploadCompleted(),
+                        e -> view.showErrorMessage(e.getMessage())));
+        final Handler handler = new Handler();
+        handler.postDelayed(compositeDisposable::dispose, 1000);
+    }
+
+    private Flowable<Integer> createFlowable() {
+        return Flowable.create(emitter -> {
+            Thread.sleep(10000);
+            emitter.onError(new Throwable("error: "));
+        }, BackpressureStrategy.BUFFER);
+    }
+
+    private Flowable<Integer> flowableFromCallable() {
+        return Flowable.fromCallable(() -> {
+            throw new Exception("error 2: ");
+        });
     }
 }
