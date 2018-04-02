@@ -48,7 +48,7 @@ public class FileUploaderModel implements FileUploaderContract.Model {
                 ResponseBody response = service.postImage(createMultipartBody(filePath, emitter)).blockingGet();
                 emitter.onComplete();
             } catch (Exception e) {
-                emitter.onError(e);
+                emitter.tryOnError(e);
             }
         }, BackpressureStrategy.LATEST);
     }
