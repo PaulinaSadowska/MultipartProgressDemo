@@ -22,8 +22,7 @@ public class FileUploaderModel implements FileUploaderContract.Model {
 
     private final UploadsImService service;
 
-
-    public FileUploaderModel(UploadsImService service) {
+    FileUploaderModel(UploadsImService service) {
         this.service = service;
     }
 
@@ -44,9 +43,14 @@ public class FileUploaderModel implements FileUploaderContract.Model {
 
     @Override
     public Flowable<Double> uploadImage(String filePath) {
-        return Flowable.create(emitter -> service.postImage(createMultipartBody(filePath, emitter))
-                .subscribe(result ->
-                        emitter.onComplete(), emitter::tryOnError), BackpressureStrategy.LATEST);
+        return Flowable.create(emitter -> {
+            try {
+                ResponseBody response = service.postImage(createMultipartBody(filePath, emitter)).blockingGet();
+                emitter.onComplete();
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        }, BackpressureStrategy.LATEST);
     }
 
     private MultipartBody.Part createMultipartBody(String filePath, FlowableEmitter<Double> emitter) {
